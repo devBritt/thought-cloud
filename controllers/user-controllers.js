@@ -95,5 +95,27 @@ module.exports = {
             res.status(400).json(err);
         }
     },
-    // TODO: create addFriend, removeFriend methods
+    async addFriend({ params }, res) {
+        try {
+            // query db to add a friend to user by userId
+            const userData = await User
+                .findOneAndUpdate(
+                    { _id: params.userId },
+                    { $push: { friends: params.friendId } },
+                    { new: true }
+                );
+
+            if (userData.length < 1) {
+                console.log("Hmmm... We couldn't find a user with that ID.");
+                res.status(404).json({ message: "Hmmm... We couldn't find a user with that ID."});
+                return;
+            }
+
+            res.json(userData);
+        } catch(err) {
+            console.log(err);
+            res.status(400).json(err);
+        }
+    }
+    // TODO: create removeFriend methods
 };

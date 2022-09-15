@@ -23,10 +23,10 @@ const UserSchema = new Schema({
     }
 });
 
-// TODO: add friendCount virtual to schema
+// retrieve count of user's friends on query
+UserSchema.virtual('friendCount').get(function() {
+    return this.friends.length;
+});
 
-
-// TODO: create User model
-
-
-// TODO: export User model
+// create and export User model
+module.exports = model('User', UserSchema);

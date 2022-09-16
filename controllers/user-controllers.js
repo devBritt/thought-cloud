@@ -116,6 +116,27 @@ module.exports = {
             console.log(err);
             res.status(400).json(err);
         }
+    },
+    async removeFriend({ params }, res) {
+        try {
+            // query db to remove a friend from user by userId
+            const userData = await User
+                .findOneAndUpdate(
+                    { _id: params.userId },
+                    { $push: { friends: params.friendId } },
+                    { new: true }
+                );
+            
+            if (userData.length < 1) {
+                console.log("Hmmm... We couldn't find a user with that Id.");
+                res.status(404).json({ message: "Hmmm... We couldn't find a user with that ID." });
+                return;
+            }
+
+            res.json(userData);
+        } catch(err) {
+            console.log(err);
+            res.status(400).json(err);
+        }
     }
-    // TODO: create removeFriend methods
 };

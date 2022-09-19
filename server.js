@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+require('dotenv').config();
 
 // initialize express
 const app = express();
@@ -13,7 +14,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(require('./routes'));
 
 // connect mongoose to db
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/thought-cloud', {
+mongoose.connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 });

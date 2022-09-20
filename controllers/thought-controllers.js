@@ -128,6 +128,25 @@ module.exports = {
         }
     },
     async removeReaction({ params }, res) {
-        // TODO
+        try {
+            // query db to remove a reaction from thought reactions
+            const thoughtData = await Thought
+                .findOneAndUpdate(
+                    { _id: params.thoughtId },
+                    { $pull: { reactions: { reactionId: params.reactionId }}},
+                    { new: true }
+                );
+
+            if (thoughtData.length < 1) {
+                console.log("Hmmm... We couldn't find a thought with that ID.");
+                res.status(404).json({ message: "Hmmm... We couldn't find a thought with that ID." });
+                return;
+            }
+
+            res.json(thoughtData);
+        } catch(err) {
+            console.log(err);
+            res.status(400).json(err);
+        }
     }
 };

@@ -1,6 +1,6 @@
 const { User } = require('../models');
 
-// crreate user controller methods
+// create user controller methods
 module.exports = {
     async getAllUsers(req, res) {
         try {

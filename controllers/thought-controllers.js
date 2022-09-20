@@ -20,6 +20,10 @@ module.exports = {
     async getThoughtById({ params }, res) {
         try {
             const thoughtData = await Thought.findById(params.thoughtId)
+                .populate({
+                    path: 'reactions',
+                    select: '-__v'
+                })
                 .select('-__v');
 
             if (thoughtData.length < 1) {
@@ -100,6 +104,30 @@ module.exports = {
             console.log(err);
             res.status(400).json(err);
         }
+    },
+    async addReaction({ params, body }, res) {
+        try {
+            // query db to add a reaction to thought reactions
+            const thoughtData = await Thought
+                .findOneAndUpdate(
+                    { _id: params.thoughtId },
+                    { $push: { reactions: body} },
+                    { new: true, runValidators: true }
+                );
+            
+            if (thoughtData.length < 1) {
+                console.log("Hmmm... We couldn't find a thought with that ID.");
+                res.status(404).json("Hmmm... We couldn't find a thought with that ID.");
+                return;
+            }
+
+            res.json(thoughtData);
+        } catch(err) {
+            console.log(err);
+            res.status(400).json(err);
+        }
+    },
+    async removeReaction({ params }, res) {
+        // TODO
     }
-    // TODO: make addReaction, removeReaction
 };

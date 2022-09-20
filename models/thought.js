@@ -36,8 +36,7 @@ const ThoughtSchema = new Schema({
         type: String,
         require: true
     },
-    // reactions list
-    // TODO: add reactions
+    reactions: [ReactionSchema]
 },
 {
     toJSON: { virtuals: true },
@@ -45,7 +44,9 @@ const ThoughtSchema = new Schema({
 });
 
 // retrieve cound of thought's reactions on query
-// TODO: create reaction count virtual
+ThoughtSchema.virtual('reactionCount').get(function() {
+    return this.reactions.length;
+});
 
 // create and export Thought model
 module.exports = model('Thought', ThoughtSchema);

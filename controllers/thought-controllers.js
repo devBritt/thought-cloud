@@ -5,10 +5,13 @@ module.exports = {
     async getAllThoughts(req, res) {
         try {
             // query db for all thoughts
-            // TODO: add reactions to populate
             const thoughtData = await Thought.find({})
+                .populate({
+                    path: 'reactions',
+                    select: '-__v'
+                })
                 .select('-__v');
-        res.json(thoughtData);
+            res.json(thoughtData);
         } catch(err) {
             console.log(err);
             res.status(400).json(err);

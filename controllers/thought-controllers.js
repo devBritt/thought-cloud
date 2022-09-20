@@ -41,8 +41,7 @@ module.exports = {
             await User
                 .findOneAndUpdate(
                     { username: body.createdBy },
-                    { $push: { thoughts: { _id }}},
-                    { new: true });
+                    { $push: { thoughts: { _id }}});
 
             res.json(thoughtData);
         } catch(err) {
@@ -54,7 +53,28 @@ module.exports = {
         console.log(params, body);
     },
     async removeThought({ params }, res) {
-        console.log(params);
+        try {
+            // query db to delete a thought
+            const thoughtData = await Thought
+            .findOneAndDelete({ _id: params.thoughtId });
+
+            if (thoughtData.length < 1) {
+                console.log("Hmmm... We couldn't find a thought with that ID.");
+                res.status(404).json({ message: "Hmmm... We couldn't find a user with that ID." });
+                return;
+            }
+
+            // pull thought from user
+            await User
+                .findOneAndUpdate(
+                    { username: thoughtData.createdBy.trim() },
+                    {$pull: { thoughts: params.thoughtId }});
+
+            res.json(thoughtData);
+        } catch(err) {
+            console.log(err);
+            res.status(400).json(err);
+        }
     }
     // TODO: make addReaction, removeReaction
 };

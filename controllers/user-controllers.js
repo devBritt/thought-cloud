@@ -93,10 +93,14 @@ module.exports = {
             }
 
             // BONUS: remove all thoughts associated with deleted user
-            const numDeleted = await Thought
+            if (userData.thoughtCount > 0) {
+                const numDeleted = await Thought
                 .deleteMany({ $eq: { createdBy: params.userId }});
-
-            res.json({ userDeleted: userData, thoughtsDeleted: numDeleted });
+                res.json({ userDeleted: userData, thoughtsDeleted: numDeleted });
+                return;
+            }
+            
+            res.json(userData);
         } catch(err) {
             console.log(err);
             res.status(400).json(err);

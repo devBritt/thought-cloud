@@ -8,7 +8,9 @@
 <img src='https://img.shields.io/github/license/devbritt/thought-cloud?color=informational&style=flat-square'>
 </a>
 <!-- DEPENDENCIES BADGES -->
-<!-- <img src='https://img.shields.io/github/package-json/dependency-version/devbritt/thought-cloud/pkgName?color=informational&label=pkgName&style=flat-square'> -->
+<img src='https://img.shields.io/github/package-json/dependency-version/devbritt/thought-cloud/dotenv?color=informational&label=dotenv&style=flat-square'>
+<img src='https://img.shields.io/github/package-json/dependency-version/devbritt/thought-cloud/express?color=informational&label=express&style=flat-square'>
+<img src='https://img.shields.io/github/package-json/dependency-version/devbritt/thought-cloud/mongoose?color=informational&label=mongoose&style=flat-square'>
 </div>
 </h1>
 
@@ -23,25 +25,23 @@ The custom API for a social network called Thought Cloud.
 
 <div align='center'>
 
-[![USAGE](https://img.shields.io/badge/USAGE-EA2171?style=for-the-badge)](#usage)&nbsp;&nbsp;[![DEMO](https://img.shields.io/badge/DEMO-870DC2?style=for-the-badge)](#demo)&nbsp;&nbsp;[![LESSONS](https://img.shields.io/badge/LESSONS-21D09C?style=for-the-badge)](#lessons)
+[![DEMO](https://img.shields.io/badge/DEMO-07bdff?style=for-the-badge)](#demo)&nbsp;&nbsp;[![LESSONS](https://img.shields.io/badge/LESSONS-fe51b0?style=for-the-badge)](#lessons)
 
 </div>
 <br />
 
-### Usage
----
-Instructions for using and/or installing the application go here.
-
-<br />
-
 ### Demo
 ---
-Images and links to deployments/videos go here.
-<!-- [Project Name here](linkHere)
-[![Project Name here](imgLinkHere)](linkHere) -->
+<br />
+
+[Thought Cloud API](https://youtu.be/1scMt2WZt6g)
+[![Thought Cloud API](/assets/images/app-screenshot.png)](https://youtu.be/1scMt2WZt6g)
 
 <br />
 
 ### Lessons
 ---
-What did you learn while working on this project? What challenges did you face and how did you overcome them?
+I had a pretty difficult time setting up the MongoDB connection for this challenge. 
+I couldn't get a local MongoDB connection working despite over an hour of troubleshooting. 
+Eventually, I set up a .env file that contains a MongoDB connection URL for my remote database. 
+Aside from those issues, I really enjoyed working with MongoDB compared to MySQL.

@@ -1,4 +1,4 @@
-const { Thought } = require('../models');
+const { Thought, User } = require('../models');
 
 // create thought controller methods
 module.exports = {
@@ -35,6 +35,14 @@ module.exports = {
         try {
             // query db to create new user
             const thoughtData = await Thought.create(body);
+            const { _id } = thoughtData;
+            
+            // add thought to user thoughts list
+            await User
+                .findOneAndUpdate(
+                    { username: body.createdBy },
+                    { $push: { thoughts: { _id }}},
+                    { new: true });
 
             res.json(thoughtData);
         } catch(err) {

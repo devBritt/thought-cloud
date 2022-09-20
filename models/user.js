@@ -17,7 +17,9 @@ const UserSchema = new Schema({
     friends: [{
         type: Types.ObjectId, ref: 'User'
     }],
-    // TODO: add thoughts array after Thought model complete
+    thoughts: [{
+        type: Types.ObjectId, ref: 'Thought'
+    }]
 },
 {
     toJSON: {
@@ -30,6 +32,11 @@ const UserSchema = new Schema({
 UserSchema.virtual('friendCount').get(function() {
     return this.friends.length;
 });
+
+// retrieve count of user's thoughts on query
+UserSchema.virtual('thoughtCount').get(function() {
+    return this.thoughts.length;
+})
 
 // create and export User model
 module.exports = model('User', UserSchema);

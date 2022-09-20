@@ -5,10 +5,13 @@ module.exports = {
     async getAllUsers(req, res) {
         try {
             // query db for all Users
-            // TODO: add thoughts to populate
             const userData = await User.find({})
                 .populate({
                     path: 'friends',
+                    select: '-__v'
+                })
+                .populate({
+                    path: 'thoughts',
                     select: '-__v'
                 })
                 .select('-__v');

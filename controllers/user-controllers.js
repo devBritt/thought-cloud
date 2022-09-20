@@ -1,4 +1,4 @@
-const { User } = require('../models');
+const { User, Thought } = require('../models');
 
 // create user controller methods
 module.exports = {
@@ -85,14 +85,18 @@ module.exports = {
             // query db to delete a user
             const userData = await User
                 .findOneAndDelete({ _id: params.userId });
-
-            if (userData.length < 1) {
+            
+            if (!userData) {
                 console.log("Hmmm... We couldn't find a user with that ID.");
                 res.status(404).json({ message: "Hmmm... We couldn't find a user with that ID." });
                 return;
             }
 
-            res.json(userData);
+            // BONUS: remove all thoughts associated with deleted user
+            const numDeleted = await Thought
+                .deleteMany({ $eq: { createdBy: params.userId }});
+
+            res.json({ userDeleted: userData, thoughtsDeleted: numDeleted });
         } catch(err) {
             console.log(err);
             res.status(400).json(err);

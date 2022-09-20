@@ -99,19 +99,41 @@ module.exports = {
         try {
             // query db to add a friend to user by userId
             const userData = await User
-                .findOneAndUpdate(
-                    { _id: params.userId },
-                    { $push: { friends: params.friendId } },
-                    { new: true }
+                .findOne(
+                    { _id: params.userId }
                 );
 
             if (userData.length < 1) {
                 console.log("Hmmm... We couldn't find a user with that ID.");
                 res.status(404).json({ message: "Hmmm... We couldn't find a user with that ID."});
                 return;
-            }
+            } else {
+                let inList = false;
+                // check that new friend isn't already in list
+                userData.friends.map(friend => {
+                    console.log(friend.toString());
+                    if (friend.toString() === params.friendId) {
+                        inList = true;
+                        return;
+                    }
+                });
 
-            res.json(userData);
+                if (!inList) {
+                    // add friend
+                    userData.friends.push(params.friendId);
+
+                    const newUserData = await User
+                        .findOneAndUpdate(
+                            { _id: params.userId },
+                            { $set: { friends: userData.friends }},
+                            { new: true }
+                        );
+
+                    res.json(newUserData);
+                } else {
+                    res.json({ message: "That user is already in your friend's list!" });
+                }
+            }
         } catch(err) {
             console.log(err);
             res.status(400).json(err);

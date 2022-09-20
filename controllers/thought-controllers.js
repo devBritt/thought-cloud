@@ -50,7 +50,29 @@ module.exports = {
         }
     },
     async updateThought({ params, body }, res) {
-        console.log(params, body);
+        try {
+            // query db to update a thought
+            const thoughtData = await Thought
+                .findOneAndUpdate({
+                    _id: params.thoughtId
+                },
+                body,
+                {
+                    new: true,
+                    runValidators: true
+                });
+
+            if (thoughtData.length < 1) {
+                console.log("Hmmm... We couldn't find a thought with that ID.");
+                res.status(404).json({ message: "Hmmm... We couldn't find a thought with that ID." });
+                return;
+            }
+
+            res.json(thoughtData);
+        } catch(err) {
+            console.log(err);
+            res.status(400).json(err);
+        }
     },
     async removeThought({ params }, res) {
         try {
